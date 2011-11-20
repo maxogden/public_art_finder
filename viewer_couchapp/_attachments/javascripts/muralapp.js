@@ -288,7 +288,6 @@ var app, config;
 $('#map-page').live('pagecreate',function(event){
     loadConfig(function(c) {
       config = c;
-      setupGA();
       $('#city_name').text(config.city_name);
       $('#brought_to_you_by').text(config.brought_to_you_by);
       app = app || Mural.App();
@@ -301,6 +300,10 @@ var loadConfig = function(callback) {
       url: '/config',
       dataType: 'jsonp',
       success: function (data, textStatus, jqXHR) {
+        if (!data) {
+          console.error('could not load config document!')
+          data = {brought_to_you_by: "default value", city_name: "default value"}
+        }
         callback(data);
       }
   });
